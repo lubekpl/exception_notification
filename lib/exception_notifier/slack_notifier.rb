@@ -28,6 +28,14 @@ class ExceptionNotifier
       @notifier.ping(message, @message_opts) if valid?
     end
 
+    def clean_backtrace(exception)
+      if Rails.respond_to?(:backtrace_cleaner)
+        Rails.backtrace_cleaner.send(:filter, exception.backtrace)
+      else
+        exception.backtrace
+      end
+    end
+
     protected
 
     def valid?
@@ -62,14 +70,6 @@ class ExceptionNotifier
     def enrich_message_with_backtrace(message, exception)
       backtrace = clean_backtrace(exception).first(10).join("\n")
       [message, ['*Backtrace:*', backtrace]].join("\n")
-    end
-
-    def clean_backtrace(exception)
-      if Rails.respond_to?(:backtrace_cleaner)
-        Rails.backtrace_cleaner.send(:filter, exception.backtrace)
-      else
-        exception.backtrace
-      end
     end
 
   end
