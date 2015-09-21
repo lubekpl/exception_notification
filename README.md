@@ -1,5 +1,7 @@
-Exception Notifier Plugin for Rails ![project status](http://stillmaintained.com/smartinez87/exception_notification.png) [![Travis](http://travis-ci.org/smartinez87/exception_notification.png)](http://travis-ci.org/smartinez87/exception_notification) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/smartinez87/exception_notification)
+Exception Notifier Plugin for Rails 
 ====
+
+**This is a fork of [exception-notification](https://github.com/smartinez87/exception_notification) tag 3.0.1. It allows you to integrate exception-notifier with older apps (i.e ruby 1.8.7 apps). It's been updated so it can notify about errors via email, Campfire or Slack!**
 
 The Exception Notifier plugin provides a mailer object and a default set of
 templates for sending email notifications when errors occur in a Rails
@@ -61,6 +63,40 @@ Whatever::Application.config.middleware.use ExceptionNotifier,
 
 For more options to set Campfire, like _ssl_, check
 [here](https://github.com/collectiveidea/tinder/blob/master/lib/tinder/campfire.rb#L17).
+
+Slack Integration
+---
+
+ExceptionNotification can also send you messages to your Slack channel.
+
+First you'll need to add [slack-notifier](https://github.com/stevenosloan/slack-notifier) or, if you're using and older version of ruby [slack-notifier](https://github.com/lubekpl/slack-notifier)
+to your `Gemfile`:
+
+```ruby
+gem 'slack-notifier'
+# or
+gem 'slack-notifier', :git => 'https://github.com/lubekpl/slack-notifier'
+```
+
+To configure it, you need to set the subdomain, token and room name,
+like this:
+
+```ruby
+Whatever::Application.config.middleware.use ExceptionNotifier,
+  :email_prefix => "[Whatever] ",
+  :sender_address => %{"notifier" <notifier@example.com>},
+  :exception_recipients => %w{exceptions@example.com},
+  # example from https://github.com/smartinez87/exception_notification
+  :slack => {
+  	:webhook_url => 'webhook_url',
+	:channel => "#exceptions",
+	:additional_parameters => {
+      :icon_url => "http://image.jpg",
+      :mrkdwn => true
+    }
+  }
+```
+
 
 Customization
 ---
