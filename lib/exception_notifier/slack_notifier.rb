@@ -2,9 +2,6 @@ class ExceptionNotifier
   class SlackNotifier
 
     attr_accessor :notifier
-    attr_accessor :webhook_url
-    attr_accessor :channel
-    attr_accessor :additional_parameters
 
     def initialize(options)
       begin
