@@ -64,5 +64,13 @@ class ExceptionNotifier
       [message, ['*Backtrace:*', backtrace]].join("\n")
     end
 
+    def clean_backtrace(exception)
+      if Rails.respond_to?(:backtrace_cleaner)
+        Rails.backtrace_cleaner.send(:filter, exception.backtrace)
+      else
+        exception.backtrace
+      end
+    end
+
   end
 end
