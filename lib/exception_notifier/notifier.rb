@@ -164,7 +164,8 @@ class ExceptionNotifier
       headers = {
         :to => @options[:exception_recipients], 
         :from => @options[:sender_address],
-        :subject => subject, 
+        :reply_to => @options[:reply_to],
+        :subject => subject,
         :template_name => name
       }.merge(@options[:email_headers])
 
